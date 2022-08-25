@@ -1,10 +1,14 @@
 package br.com.infox.telas;
 
+import java.awt.ComponentOrientation;
 import java.awt.EventQueue;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.sql.Connection;
 import java.text.DateFormat;
 import java.util.Date;
 
@@ -18,22 +22,24 @@ import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.KeyStroke;
-import javax.swing.border.EmptyBorder;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
-import javax.swing.JDesktopPane;
-import javax.swing.LayoutStyle.ComponentPlacement;
-import java.awt.ComponentOrientation;
-import java.awt.Color;
-import java.awt.SystemColor;
-import javax.swing.UIManager;
 import javax.swing.SwingConstants;
+import javax.swing.UIManager;
+import javax.swing.border.EmptyBorder;
 
+import br.com.infox.dal.ModuloConexao;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.swing.JRViewer;
 
 public class TelaPrincipal extends JFrame {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
 	private JMenuItem menCadCli;
+	Connection conexao = null;
 
 	/**
 	 * Launch the application.
@@ -50,15 +56,21 @@ public class TelaPrincipal extends JFrame {
 			}
 		});
 	}
-	
+
 	public static javax.swing.JMenu mnRelatorio;
 	public static javax.swing.JMenuItem menCadUsuario;
 	public static javax.swing.JLabel lblUsuario;
+	public static javax.swing.JDesktopPane desktopPane;
+	private static TelaCliente cliente = null;
+	private static TelaOS os = null;
+	private static TelaSobre sobre = null;
+	private static TelaUsuario usuario = null;
 
 	/**
 	 * Create the frame.
 	 */
 	public TelaPrincipal() {
+		conexao = ModuloConexao.conector();
 		setComponentOrientation(ComponentOrientation.RIGHT_TO_LEFT);
 		setResizable(true);
 		setTitle("X  - Sistema para controle de OS");
@@ -66,68 +78,113 @@ public class TelaPrincipal extends JFrame {
 		setBounds(100, 100, 567, 410);
 		setExtendedState(MAXIMIZED_BOTH);
 		setLocationRelativeTo(null);
-			
-		JDesktopPane desktopPane = new JDesktopPane();
+
+		desktopPane = new javax.swing.JDesktopPane();
 		desktopPane.setBackground(UIManager.getColor("Button.background"));
-		
+
 		JMenuBar menuBar = new JMenuBar();
 		setJMenuBar(menuBar);
-		
+
 		JMenu mnCadastro = new JMenu("Cadastro");
 		menuBar.add(mnCadastro);
-		
+
 		menCadCli = new JMenuItem("Cliente");
 		menCadCli.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				TelaCliente cliente = new TelaCliente();
-				cliente.setVisible(true);
-				desktopPane.add(cliente);
+				if (cliente == null) {
+					cliente = new TelaCliente();
+					desktopPane.add(cliente);
+					cliente.setVisible(true);
+					cliente.moveToFront();
+				} else {
+					if (cliente.isVisible()) {
+						cliente.moveToFront();
+					} else {
+						desktopPane.add(cliente);
+						cliente.setVisible(true);
+						cliente.moveToFront();
+					}
+				}
 			}
 		});
 		menCadCli.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_C, InputEvent.ALT_DOWN_MASK));
 		mnCadastro.add(menCadCli);
-		
+
 		JMenuItem menCadOS = new JMenuItem("OS");
 		menCadOS.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				TelaOS os = new TelaOS();
-				os.setVisible(true);
-				desktopPane.add(os);
+				if (os == null) {
+					os = new TelaOS();
+					desktopPane.add(os);
+					os.setVisible(true);
+					os.moveToFront();
+				} else {
+					if (os.isVisible()) {
+						os.moveToFront();
+					} else {
+						desktopPane.add(os);
+						os.setVisible(true);
+						os.moveToFront();
+					}
+				}
 			}
+
 		});
 		menCadOS.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, InputEvent.ALT_DOWN_MASK));
 		mnCadastro.add(menCadOS);
-				
+
 		mnRelatorio = new javax.swing.JMenu();
 		mnRelatorio.setText("Relatório");
 		mnRelatorio.setEnabled(false);
 		menuBar.add(mnRelatorio);
-		
+
+		JMenuItem menRelCli = new JMenuItem("Clientes");
+		menRelCli.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				geraRelCli();
+			}
+		});
+		menRelCli.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_R, InputEvent.ALT_DOWN_MASK));
+		mnRelatorio.add(menRelCli);
+
 		JMenuItem menRelSer = new JMenuItem("Serviços");
+		menRelSer.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				geraRelServico();
+			}
+		});
 		menRelSer.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, InputEvent.ALT_DOWN_MASK));
 		mnRelatorio.add(menRelSer);
-		
+
 		JMenu mnAjuda = new JMenu("Ajuda");
 		menuBar.add(mnAjuda);
-		
+
 		JMenuItem menAjuSob = new JMenuItem("Sobre");
 		menAjuSob.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				TelaSobre sobre = new TelaSobre();
-				sobre.setVisible(true);
+				if (sobre == null) {
+					sobre = new TelaSobre();
+					sobre.setVisible(true);
+				} else {
+					if (sobre.isVisible()) {
+					} else {
+						sobre.setVisible(true);
+					}
+				}
 			}
 		});
 		menAjuSob.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F1, InputEvent.ALT_DOWN_MASK));
 		mnAjuda.add(menAjuSob);
-		
+
 		JMenu mnOpcoes = new JMenu("Opções");
 		menuBar.add(mnOpcoes);
-		
+
 		JMenuItem menOpcSai = new JMenuItem("Sair");
 		menOpcSai.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				int sair = JOptionPane.showConfirmDialog(null,"Tem certeza que deseja sair?", "Atenção", JOptionPane.YES_NO_OPTION);
-				if(sair == JOptionPane.YES_OPTION) {
+				int sair = JOptionPane.showConfirmDialog(null, "Tem certeza que deseja sair?", "Atenção",
+						JOptionPane.YES_NO_OPTION);
+				if (sair == JOptionPane.YES_OPTION) {
 					System.exit(0);
 				}
 			}
@@ -137,41 +194,33 @@ public class TelaPrincipal extends JFrame {
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
-		
+
 		JLabel lblData = new JLabel("Data");
-		
+
 		lblUsuario = new javax.swing.JLabel();
 		lblUsuario.setHorizontalAlignment(SwingConstants.RIGHT);
 		lblUsuario.setText("Usuário");
 		GroupLayout gl_desktopPane = new GroupLayout(desktopPane);
-		gl_desktopPane.setHorizontalGroup(
-			gl_desktopPane.createParallelGroup(Alignment.TRAILING)
-				.addGroup(gl_desktopPane.createSequentialGroup()
-					.addContainerGap(313, Short.MAX_VALUE)
-					.addComponent(lblUsuario, GroupLayout.PREFERRED_SIZE, 134, GroupLayout.PREFERRED_SIZE)
-					.addGap(18)
-					.addComponent(lblData, GroupLayout.PREFERRED_SIZE, 76, GroupLayout.PREFERRED_SIZE))
-		);
-		gl_desktopPane.setVerticalGroup(
-			gl_desktopPane.createParallelGroup(Alignment.LEADING)
-				.addGroup(gl_desktopPane.createSequentialGroup()
-					.addGroup(gl_desktopPane.createParallelGroup(Alignment.BASELINE)
-						.addComponent(lblData, GroupLayout.PREFERRED_SIZE, 16, GroupLayout.PREFERRED_SIZE)
-						.addComponent(lblUsuario))
-					.addContainerGap(323, Short.MAX_VALUE))
-		);
+		gl_desktopPane.setHorizontalGroup(gl_desktopPane.createParallelGroup(Alignment.TRAILING)
+				.addGroup(gl_desktopPane.createSequentialGroup().addContainerGap(313, Short.MAX_VALUE)
+						.addComponent(lblUsuario, GroupLayout.PREFERRED_SIZE, 134, GroupLayout.PREFERRED_SIZE)
+						.addGap(18).addComponent(lblData, GroupLayout.PREFERRED_SIZE, 76, GroupLayout.PREFERRED_SIZE)));
+		gl_desktopPane
+				.setVerticalGroup(gl_desktopPane.createParallelGroup(Alignment.LEADING)
+						.addGroup(gl_desktopPane.createSequentialGroup()
+								.addGroup(gl_desktopPane.createParallelGroup(Alignment.BASELINE)
+										.addComponent(lblData, GroupLayout.PREFERRED_SIZE, 16,
+												GroupLayout.PREFERRED_SIZE)
+										.addComponent(lblUsuario))
+								.addContainerGap(323, Short.MAX_VALUE)));
 		desktopPane.setLayout(gl_desktopPane);
 		GroupLayout gl_contentPane = new GroupLayout(contentPane);
-		gl_contentPane.setHorizontalGroup(
-			gl_contentPane.createParallelGroup(Alignment.LEADING)
-				.addComponent(desktopPane)
-		);
-		gl_contentPane.setVerticalGroup(
-			gl_contentPane.createParallelGroup(Alignment.LEADING)
-				.addComponent(desktopPane)
-		);
+		gl_contentPane
+				.setHorizontalGroup(gl_contentPane.createParallelGroup(Alignment.LEADING).addComponent(desktopPane));
+		gl_contentPane
+				.setVerticalGroup(gl_contentPane.createParallelGroup(Alignment.LEADING).addComponent(desktopPane));
 		contentPane.setLayout(gl_contentPane);
-		
+
 		addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowActivated(WindowEvent e) {
@@ -179,14 +228,25 @@ public class TelaPrincipal extends JFrame {
 				DateFormat formatador = DateFormat.getDateInstance(DateFormat.SHORT);
 				lblData.setText(formatador.format(data));
 			}
-		});	
-		
+		});
+
 		menCadUsuario = new javax.swing.JMenuItem();
 		menCadUsuario.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				TelaUsuario usuario = new TelaUsuario();
-				usuario.setVisible(true);
-				desktopPane.add(usuario);
+				if (usuario == null) {
+					usuario = new TelaUsuario();
+					desktopPane.add(usuario);
+					usuario.setVisible(true);
+					usuario.moveToFront();
+				} else {
+					if (usuario.isVisible()) {
+						usuario.moveToFront();
+					} else {
+						desktopPane.add(usuario);
+						usuario.setVisible(true);
+						usuario.moveToFront();
+					}
+				}
 			}
 		});
 		menCadUsuario.setText("Usuários");
@@ -194,6 +254,46 @@ public class TelaPrincipal extends JFrame {
 		menCadUsuario.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_U, InputEvent.ALT_DOWN_MASK));
 		mnCadastro.add(menCadUsuario);
 	}
+
+	private void geraRelCli() {
+		int confirma = JOptionPane.showConfirmDialog(null, "Confirma a emissão deste relatório?", "Atenção",
+				JOptionPane.YES_NO_OPTION);
+		if (confirma == JOptionPane.YES_OPTION) {
+			try {
+				JasperPrint print = JasperFillManager.fillReport("src/MyReports/Clientes1.jasper", null, conexao);
+
+				JFrame tela = new JFrame("Relatório");
+				tela.setBounds(100, 100, 626, 452);
+
+				JRViewer painel = new JRViewer(print);
+				tela.getContentPane().add(painel);
+				tela.setExtendedState(MAXIMIZED_BOTH);
+				tela.setVisible(true);
+
+			} catch (Exception e) {
+				JOptionPane.showMessageDialog(null, e, "Erro", JOptionPane.ERROR_MESSAGE);
+			}
+		}
+	}
+
+	private void geraRelServico() {
+		int confirma = JOptionPane.showConfirmDialog(null, "Confirma a emissão deste relatório?", "Atenção",
+				JOptionPane.YES_NO_OPTION);
+		if (confirma == JOptionPane.YES_OPTION) {
+			try {
+				JasperPrint print = JasperFillManager.fillReport("src/MyReports/servicos.jasper", null, conexao);
+
+				JFrame tela = new JFrame("Relatório");
+				tela.setBounds(100, 100, 626, 452);
+
+				JRViewer painel = new JRViewer(print);
+				tela.getContentPane().add(painel);
+				tela.setExtendedState(MAXIMIZED_BOTH);
+				tela.setVisible(true);
+
+			} catch (Exception e) {
+				JOptionPane.showMessageDialog(null, e, "Erro", JOptionPane.ERROR_MESSAGE);
+			}
+		}
+	}
 }
-
-

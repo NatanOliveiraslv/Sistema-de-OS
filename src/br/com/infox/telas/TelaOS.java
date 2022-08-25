@@ -2,37 +2,41 @@ package br.com.infox.telas;
 
 import java.awt.Color;
 import java.awt.EventQueue;
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.HashMap;
+
 import javax.swing.ButtonGroup;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JComboBox;
+import javax.swing.JFrame;
 import javax.swing.JInternalFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.border.EtchedBorder;
 import javax.swing.border.TitledBorder;
-import javax.swing.table.DefaultTableModel;
-import br.com.infox.dal.ModuloConexao;
-import net.proteanit.sql.DbUtils;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import javax.swing.event.InternalFrameAdapter;
 import javax.swing.event.InternalFrameEvent;
-import java.awt.Font;
+import javax.swing.table.DefaultTableModel;
+
+import br.com.infox.dal.ModuloConexao;
+import net.proteanit.sql.DbUtils;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.swing.JRViewer;
 
 public class TelaOS extends JInternalFrame {
 	private JTextField txtOs;
@@ -70,6 +74,10 @@ public class TelaOS extends JInternalFrame {
 	private javax.swing.JRadioButton rdbtnOs;
 	private javax.swing.JComboBox cboOs;
 	private javax.swing.JButton btnAdicionar;
+	private javax.swing.JButton btnPesquisar;
+	private javax.swing.JButton btnAlterar;
+	private javax.swing.JButton btnRemover;
+	private javax.swing.JButton btnImprimir;
 
 	/**
 	 * Create the frame.
@@ -144,7 +152,7 @@ public class TelaOS extends JInternalFrame {
 		getContentPane().add(lblNewLabel_1);
 
 		cboOs = new javax.swing.JComboBox();
-		cboOs.setModel(new DefaultComboBoxModel(new String[] { "Na bancada", "Entrega OK", "Orçamento REPROVADO",
+		cboOs.setModel(new DefaultComboBoxModel(new String[] { " ", "Na bancada", "Entrega OK", "Orçamento REPROVADO",
 				"Aguardando aprovação", "Aguardando peças", "Abandonado pelo cliente", "Retornou" }));
 		cboOs.setBounds(59, 130, 198, 18);
 		getContentPane().add(cboOs);
@@ -253,50 +261,58 @@ public class TelaOS extends JInternalFrame {
 			}
 		});
 		btnAdicionar.setIcon(new ImageIcon(TelaOS.class.getResource("/br/com/infox/icones/create.png")));
-		btnAdicionar.setToolTipText("Adicionar");
+		btnAdicionar.setToolTipText("Emitir OS");
 		btnAdicionar.setBackground((Color) null);
 		btnAdicionar.setBounds(35, 331, 80, 80);
 		getContentPane().add(btnAdicionar);
 
-		JButton btnConsultar = new JButton("");
-		btnConsultar.addActionListener(new ActionListener() {
+		btnPesquisar = new javax.swing.JButton("");
+		btnPesquisar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				pesquisar_os();
 			}
 		});
-		btnConsultar.setIcon(new ImageIcon(TelaOS.class.getResource("/br/com/infox/icones/read.png")));
-		btnConsultar.setToolTipText("Consultar");
-		btnConsultar.setBackground((Color) null);
-		btnConsultar.setBounds(150, 331, 80, 80);
-		getContentPane().add(btnConsultar);
+		btnPesquisar.setIcon(new ImageIcon(TelaOS.class.getResource("/br/com/infox/icones/read.png")));
+		btnPesquisar.setToolTipText("Pesquisar OS");
+		btnPesquisar.setBackground((Color) null);
+		btnPesquisar.setBounds(150, 331, 80, 80);
+		getContentPane().add(btnPesquisar);
 
-		JButton btnAlterar = new JButton("");
+		btnAlterar = new javax.swing.JButton("");
+		btnAlterar.setEnabled(false);
 		btnAlterar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				alterar_os();
 			}
 		});
 		btnAlterar.setIcon(new ImageIcon(TelaOS.class.getResource("/br/com/infox/icones/Update.png")));
-		btnAlterar.setToolTipText("Alterar");
+		btnAlterar.setToolTipText("Alterar OS");
 		btnAlterar.setBackground((Color) null);
 		btnAlterar.setBounds(265, 331, 80, 80);
 		getContentPane().add(btnAlterar);
 
-		JButton btnRemover = new JButton("");
+		btnRemover = new javax.swing.JButton("");
+		btnRemover.setEnabled(false);
 		btnRemover.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				excluir_os();
 			}
 		});
 		btnRemover.setIcon(new ImageIcon(TelaOS.class.getResource("/br/com/infox/icones/delete.png")));
-		btnRemover.setToolTipText("Remover");
+		btnRemover.setToolTipText("Remover OS");
 		btnRemover.setBackground((Color) null);
 		btnRemover.setBounds(380, 331, 80, 80);
 		getContentPane().add(btnRemover);
 
-		JButton btnImprimir = new JButton("");
+		btnImprimir = new javax.swing.JButton("");
+		btnImprimir.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				geraRelServico();
+			}
+		});
+		btnImprimir.setEnabled(false);
 		btnImprimir.setIcon(new ImageIcon(TelaOS.class.getResource("/br/com/infox/icones/print.png")));
-		btnImprimir.setToolTipText("Remover");
+		btnImprimir.setToolTipText("Imprimir OS");
 		btnImprimir.setBackground((Color) null);
 		btnImprimir.setBounds(495, 331, 80, 80);
 		getContentPane().add(btnImprimir);
@@ -331,18 +347,17 @@ public class TelaOS extends JInternalFrame {
 			pst.setString(6, txtTecnico.getText());
 			pst.setString(7, txtValor.getText());
 			pst.setString(8, txtId.getText());
-			if (txtId.getText().isEmpty() || txtEquipamento.getText().isEmpty() || txtDefeito.getText().isEmpty()) {
+			if (txtId.getText().isEmpty() || txtEquipamento.getText().isEmpty() || txtDefeito.getText().isEmpty()
+					|| cboOs.getSelectedItem().equals(" ")) {
 				JOptionPane.showMessageDialog(null, "Preencha todos os campos obrigatórios");
 			} else {
 				int adicionado = pst.executeUpdate();
 				if (adicionado > 0) {
 					JOptionPane.showMessageDialog(null, "OS emitida com sucesso");
-					txtId.setText(null);
-					txtEquipamento.setText(null);
-					txtDefeito.setText(null);
-					txtServico.setText(null);
-					txtTecnico.setText(null);
-					txtValor.setText(null);
+					recuperarOs();
+					btnAdicionar.setEnabled(false);
+					btnPesquisar.setEnabled(false);
+					btnImprimir.setEnabled(true);
 				}
 			}
 		} catch (Exception e) {
@@ -352,7 +367,8 @@ public class TelaOS extends JInternalFrame {
 
 	private void pesquisar_os() {
 		String num_os = JOptionPane.showInputDialog("Numero da OS");
-		String sql = "select * from tbos where os =" + num_os;
+		String sql = "select os,date_format(data_os,'%d/%m/%y  - %H:%i'),tipo,situacao,equipamento,defeito,servico,tecnico,valor,idcli from tbos where os ="
+				+ num_os;
 		try {
 			pst = conexao.prepareStatement(sql);
 			rs = pst.executeQuery();
@@ -375,8 +391,12 @@ public class TelaOS extends JInternalFrame {
 				txtValor.setText(rs.getString(9));
 				txtId.setText(rs.getString(10));
 				btnAdicionar.setEnabled(false);
+				btnPesquisar.setEnabled(false);
 				txtPesquisar.setEnabled(false);
 				tbClientes.setVisible(false);
+				btnAlterar.setEnabled(true);
+				btnRemover.setEnabled(true);
+				btnImprimir.setEnabled(true);
 
 			} else {
 				JOptionPane.showMessageDialog(null, "OS não cadastrada");
@@ -403,24 +423,14 @@ public class TelaOS extends JInternalFrame {
 			pst.setString(7, txtValor.getText());
 			pst.setString(8, txtOs.getText());
 
-			if (txtId.getText().isEmpty() || txtEquipamento.getText().isEmpty() || txtDefeito.getText().isEmpty()) {
+			if (txtId.getText().isEmpty() || txtEquipamento.getText().isEmpty() || txtDefeito.getText().isEmpty()
+					|| cboOs.getSelectedItem().equals(" ")) {
 				JOptionPane.showMessageDialog(null, "Preencha todos os campos obrigatórios");
 			} else {
 				int adicionado = pst.executeUpdate();
 				if (adicionado > 0) {
 					JOptionPane.showMessageDialog(null, "OS alterada com sucesso");
-
-					txtOs.setText(null);
-					txtData.setText(null);
-					txtId.setText(null);
-					txtEquipamento.setText(null);
-					txtDefeito.setText(null);
-					txtServico.setText(null);
-					txtTecnico.setText(null);
-					txtValor.setText(null);
-					btnAdicionar.setEnabled(true);
-					txtPesquisar.setEnabled(true);
-					tbClientes.setVisible(true);
+					limpar();
 				}
 			}
 		} catch (Exception e) {
@@ -440,19 +450,66 @@ public class TelaOS extends JInternalFrame {
 				int apagado = pst.executeUpdate();
 				if (apagado > 0) {
 					JOptionPane.showMessageDialog(null, "OS excluída com sucesso");
-					txtOs.setText(null);
-					txtData.setText(null);
-					txtId.setText(null);
-					txtEquipamento.setText(null);
-					txtDefeito.setText(null);
-					txtServico.setText(null);
-					txtTecnico.setText(null);
-					txtValor.setText(null);
-					btnAdicionar.setEnabled(true);
-					txtPesquisar.setEnabled(true);
-					tbClientes.setVisible(true);
+					limpar();
 				}
 
+			} catch (Exception e) {
+				JOptionPane.showMessageDialog(null, e, "Erro", JOptionPane.ERROR_MESSAGE);
+			}
+		}
+	}
+
+	private void limpar() {
+		((DefaultTableModel) tbClientes.getModel()).setRowCount(0);
+		cboOs.setSelectedItem(" ");
+		txtPesquisar.setText(null);
+		txtOs.setText(null);
+		txtData.setText(null);
+		txtId.setText(null);
+		txtEquipamento.setText(null);
+		txtDefeito.setText(null);
+		txtServico.setText(null);
+		txtTecnico.setText(null);
+		txtValor.setText(null);
+
+		btnAdicionar.setEnabled(true);
+		btnPesquisar.setEnabled(true);
+		txtPesquisar.setEnabled(true);
+		tbClientes.setVisible(true);
+
+		btnAlterar.setEnabled(false);
+		btnRemover.setEnabled(false);
+		btnImprimir.setEnabled(false);
+	}
+	
+	private void recuperarOs() {
+		String sql = "Select max(os) from tbos";
+		try {
+			pst = conexao.prepareStatement(sql);
+			rs = pst.executeQuery();
+			if(rs.next()) {
+				txtOs.setText(rs.getString(1));
+			}
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(null, e, "Erro", JOptionPane.ERROR_MESSAGE);
+		}
+	}
+	
+	private void geraRelServico(){
+		int confirma = JOptionPane.showConfirmDialog(null, "Confirma a emissão deste relatório?", "Atenção",JOptionPane.YES_NO_OPTION);
+		if(confirma == JOptionPane.YES_OPTION) {
+			try {
+				HashMap filtro = new HashMap();
+				filtro.put("os",Integer.parseInt(txtOs.getText())); 
+		        JasperPrint print = JasperFillManager.fillReport("src/MyReports/OS.jasper", filtro, conexao);
+		        
+				JFrame tela = new JFrame("Relatório");
+				tela.setBounds(100, 100, 626, 452);
+				
+				JRViewer painel = new JRViewer(print);
+				tela.getContentPane().add(painel);
+				tela.setVisible(true);
+				
 			} catch (Exception e) {
 				JOptionPane.showMessageDialog(null, e, "Erro", JOptionPane.ERROR_MESSAGE);
 			}
