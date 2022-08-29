@@ -19,6 +19,10 @@ import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 
 import br.com.infox.dal.ModuloConexao;
+import javax.swing.GroupLayout;
+import javax.swing.GroupLayout.Alignment;
+import javax.swing.JPanel;
+import javax.swing.border.EtchedBorder;
 
 public class TelaUsuario extends JInternalFrame {
 	private JTextField txtId;
@@ -53,69 +57,59 @@ public class TelaUsuario extends JInternalFrame {
 	 * Create the frame.
 	 */
 	public TelaUsuario() {
+		setFrameIcon(new ImageIcon(TelaUsuario.class.getResource("/br/com/infox/icones/NTN - infox.png")));
+		setResizable(true);
 		conexao = ModuloConexao.conector();
 		setClosable(true);
 		setMaximizable(true);
 		setIconifiable(true);
 		setTitle("Usuários");
-		setBounds(100, 100, 626, 452);
-		getContentPane().setLayout(null);
+		setBounds(100, 100, 507, 441);
 
-		JLabel lblId = new JLabel("* Id");
-		lblId.setBounds(23, 25, 46, 14);
-		getContentPane().add(lblId);
+		JLabel lblId = new JLabel("* Id:");
+		lblId.setBounds(23, 40, 46, 14);
 
-		JLabel lblNome = new JLabel("* Nome");
-		lblNome.setBounds(23, 74, 46, 14);
-		getContentPane().add(lblNome);
+		JLabel lblNome = new JLabel("* Nome do usuário:");
+		lblNome.setBounds(23, 96, 115, 14);
 
 		JLabel lblLogin = new JLabel("* Login");
-		lblLogin.setBounds(298, 126, 46, 14);
-		getContentPane().add(lblLogin);
+		lblLogin.setBounds(268, 152, 46, 14);
 
 		JLabel lblSenha = new JLabel("* Senha");
-		lblSenha.setBounds(23, 190, 46, 14);
-		getContentPane().add(lblSenha);
+		lblSenha.setBounds(23, 216, 46, 14);
 
 		JLabel lblPerfil = new JLabel("* Perfil");
-		lblPerfil.setBounds(298, 190, 46, 14);
-		getContentPane().add(lblPerfil);
+		lblPerfil.setBounds(268, 216, 46, 14);
 
-		JLabel lblFone = new JLabel("Fone");
-		lblFone.setBounds(23, 126, 46, 14);
-		getContentPane().add(lblFone);
+		JLabel lblFone = new JLabel("Fone:");
+		lblFone.setBounds(23, 152, 46, 14);
 
 		txtId = new JTextField();
-		txtId.setBounds(69, 22, 86, 20);
-		getContentPane().add(txtId);
+		txtId.setBounds(23, 65, 86, 20);
 		txtId.setColumns(10);
 
 		txtNome = new JTextField();
+		txtNome.setBounds(23, 121, 445, 20);
 		txtNome.setColumns(10);
-		txtNome.setBounds(69, 71, 499, 20);
-		getContentPane().add(txtNome);
 
 		txtFone = new JTextField();
+		txtFone.setBounds(23, 177, 200, 20);
 		txtFone.setColumns(10);
-		txtFone.setBounds(69, 123, 219, 20);
-		getContentPane().add(txtFone);
 
 		txtSenha = new JTextField();
+		txtSenha.setBounds(23, 237, 200, 20);
 		txtSenha.setColumns(10);
-		txtSenha.setBounds(69, 187, 219, 20);
-		getContentPane().add(txtSenha);
 
 		txtLogin = new JTextField();
+		txtLogin.setBounds(268, 177, 200, 20);
 		txtLogin.setColumns(10);
-		txtLogin.setBounds(349, 120, 219, 20);
-		getContentPane().add(txtLogin);
 
 		cbPerfil = new javax.swing.JComboBox();
+		cbPerfil.setBounds(268, 237, 200, 20);
 		cbPerfil.setModel(new DefaultComboBoxModel(new String[] { "admin", "user" }));
-		cbPerfil.setBounds(349, 187, 219, 20);
-		getContentPane().add(cbPerfil);
 
 		JButton btnAdicionar = new JButton("");
+		btnAdicionar.setBounds(10, 319, 80, 80);
 		btnAdicionar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				adicionar();
@@ -124,11 +118,10 @@ public class TelaUsuario extends JInternalFrame {
 		btnAdicionar.setIcon(new ImageIcon(TelaUsuario.class.getResource("/br/com/infox/icones/create.png")));
 		btnAdicionar.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		btnAdicionar.setToolTipText("Adicionar");
-		btnAdicionar.setBounds(58, 286, 80, 80);
 		btnAdicionar.setBackground(null);
-		getContentPane().add(btnAdicionar);
 
 		JButton btnConsultar = new JButton("");
+		btnConsultar.setBounds(143, 319, 80, 80);
 		btnConsultar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				consultar();
@@ -138,10 +131,9 @@ public class TelaUsuario extends JInternalFrame {
 		btnConsultar.setIcon(new ImageIcon(TelaUsuario.class.getResource("/br/com/infox/icones/read.png")));
 		btnConsultar.setToolTipText("Consultar");
 		btnConsultar.setBackground((Color) null);
-		btnConsultar.setBounds(196, 286, 80, 80);
-		getContentPane().add(btnConsultar);
 
 		JButton btnAlterar = new JButton("");
+		btnAlterar.setBounds(268, 319, 80, 80);
 		btnAlterar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				alterar();
@@ -151,10 +143,9 @@ public class TelaUsuario extends JInternalFrame {
 		btnAlterar.setIcon(new ImageIcon(TelaUsuario.class.getResource("/br/com/infox/icones/Update.png")));
 		btnAlterar.setToolTipText("Alterar");
 		btnAlterar.setBackground((Color) null);
-		btnAlterar.setBounds(334, 286, 80, 80);
-		getContentPane().add(btnAlterar);
 
 		JButton btnRemover = new JButton("");
+		btnRemover.setBounds(401, 319, 80, 80);
 		btnRemover.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				remover();
@@ -164,12 +155,32 @@ public class TelaUsuario extends JInternalFrame {
 		btnRemover.setIcon(new ImageIcon(TelaUsuario.class.getResource("/br/com/infox/icones/delete.png")));
 		btnRemover.setToolTipText("Remover");
 		btnRemover.setBackground((Color) null);
-		btnRemover.setBounds(472, 286, 80, 80);
-		getContentPane().add(btnRemover);
 
 		JLabel lblNewLabel = new JLabel("* Campos obrigatórios");
-		lblNewLabel.setBounds(436, 25, 132, 14);
+		lblNewLabel.setBounds(336, 51, 132, 14);
+		getContentPane().setLayout(null);
+		getContentPane().add(lblId);
+		getContentPane().add(lblNome);
+		getContentPane().add(lblLogin);
+		getContentPane().add(lblSenha);
+		getContentPane().add(lblPerfil);
+		getContentPane().add(lblFone);
+		getContentPane().add(txtId);
+		getContentPane().add(txtNome);
+		getContentPane().add(txtFone);
+		getContentPane().add(txtSenha);
+		getContentPane().add(txtLogin);
+		getContentPane().add(cbPerfil);
+		getContentPane().add(btnAdicionar);
+		getContentPane().add(btnConsultar);
+		getContentPane().add(btnAlterar);
+		getContentPane().add(btnRemover);
 		getContentPane().add(lblNewLabel);
+		
+		JPanel panel = new JPanel();
+		panel.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
+		panel.setBounds(10, 11, 473, 285);
+		getContentPane().add(panel);
 
 	}
 

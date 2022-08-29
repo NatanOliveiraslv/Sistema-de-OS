@@ -19,6 +19,7 @@ import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 
 import br.com.infox.dal.ModuloConexao;
+import java.awt.Toolkit;
 
 public class TelaLogin extends JFrame {
 
@@ -61,6 +62,7 @@ public class TelaLogin extends JFrame {
 	 * Create the frame.
 	 */
 	public TelaLogin() {
+		setIconImage(Toolkit.getDefaultToolkit().getImage(TelaLogin.class.getResource("/br/com/infox/icones/NTN - infox.png")));
 		conexao = ModuloConexao.conector();
 		setResizable(false);
 		setTitle("X - System - Login");
@@ -140,7 +142,7 @@ public class TelaLogin extends JFrame {
 				JOptionPane.showMessageDialog(null, "Usuário e/ou senha inválido(s)", "Alerta",JOptionPane.INFORMATION_MESSAGE);
 			}
 		} catch (Exception e) {
-			JOptionPane.showMessageDialog(null, e, "Erro", JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(null, "Sem conexão!", "Erro", JOptionPane.ERROR_MESSAGE);
 		}
 	}
 

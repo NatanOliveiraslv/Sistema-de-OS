@@ -8,6 +8,7 @@ import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.beans.PropertyVetoException;
 import java.sql.Connection;
 import java.text.DateFormat;
 import java.util.Date;
@@ -30,6 +31,9 @@ import br.com.infox.dal.ModuloConexao;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.swing.JRViewer;
+import javax.swing.ImageIcon;
+import javax.swing.LayoutStyle.ComponentPlacement;
+import java.awt.Toolkit;
 
 public class TelaPrincipal extends JFrame {
 
@@ -70,13 +74,14 @@ public class TelaPrincipal extends JFrame {
 	 * Create the frame.
 	 */
 	public TelaPrincipal() {
+		setIconImage(Toolkit.getDefaultToolkit().getImage(TelaPrincipal.class.getResource("/br/com/infox/icones/NTN - infox.png")));
 		conexao = ModuloConexao.conector();
 		setComponentOrientation(ComponentOrientation.RIGHT_TO_LEFT);
 		setResizable(true);
 		setTitle("X  - Sistema para controle de OS");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 567, 410);
-		setExtendedState(MAXIMIZED_BOTH);
+		setBounds(100, 100, 800, 600);
+//		setExtendedState(MAXIMIZED_BOTH);
 		setLocationRelativeTo(null);
 
 		desktopPane = new javax.swing.JDesktopPane();
@@ -99,7 +104,14 @@ public class TelaPrincipal extends JFrame {
 				} else {
 					if (cliente.isVisible()) {
 						cliente.moveToFront();
+						try {
+							cliente.setIcon(false);
+						} catch (PropertyVetoException e1) {
+						}
 					} else {
+						desktopPane.add(cliente);
+						cliente = null;
+						cliente = new TelaCliente();
 						desktopPane.add(cliente);
 						cliente.setVisible(true);
 						cliente.moveToFront();
@@ -121,7 +133,14 @@ public class TelaPrincipal extends JFrame {
 				} else {
 					if (os.isVisible()) {
 						os.moveToFront();
+						try {
+							os.setIcon(false);
+						} catch (PropertyVetoException e1) {
+						}
 					} else {
+						desktopPane.add(os);
+						os = null;
+						os = new TelaOS();
 						desktopPane.add(os);
 						os.setVisible(true);
 						os.moveToFront();
@@ -200,19 +219,34 @@ public class TelaPrincipal extends JFrame {
 		lblUsuario = new javax.swing.JLabel();
 		lblUsuario.setHorizontalAlignment(SwingConstants.RIGHT);
 		lblUsuario.setText("Usuário");
+		
+		JLabel t = new JLabel("");
+		t.setIcon(new ImageIcon(TelaPrincipal.class.getResource("/br/com/infox/icones/NTN - infox.png")));
+		t.setHorizontalAlignment(NORMAL);
 		GroupLayout gl_desktopPane = new GroupLayout(desktopPane);
-		gl_desktopPane.setHorizontalGroup(gl_desktopPane.createParallelGroup(Alignment.TRAILING)
-				.addGroup(gl_desktopPane.createSequentialGroup().addContainerGap(313, Short.MAX_VALUE)
-						.addComponent(lblUsuario, GroupLayout.PREFERRED_SIZE, 134, GroupLayout.PREFERRED_SIZE)
-						.addGap(18).addComponent(lblData, GroupLayout.PREFERRED_SIZE, 76, GroupLayout.PREFERRED_SIZE)));
-		gl_desktopPane
-				.setVerticalGroup(gl_desktopPane.createParallelGroup(Alignment.LEADING)
-						.addGroup(gl_desktopPane.createSequentialGroup()
-								.addGroup(gl_desktopPane.createParallelGroup(Alignment.BASELINE)
-										.addComponent(lblData, GroupLayout.PREFERRED_SIZE, 16,
-												GroupLayout.PREFERRED_SIZE)
-										.addComponent(lblUsuario))
-								.addContainerGap(323, Short.MAX_VALUE)));
+		gl_desktopPane.setHorizontalGroup(
+			gl_desktopPane.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_desktopPane.createSequentialGroup()
+					.addGap(243)
+					.addComponent(t, GroupLayout.PREFERRED_SIZE, 288, Short.MAX_VALUE)
+					.addGap(243))
+				.addGroup(Alignment.TRAILING, gl_desktopPane.createSequentialGroup()
+					.addContainerGap(536, Short.MAX_VALUE)
+					.addComponent(lblUsuario, GroupLayout.PREFERRED_SIZE, 134, GroupLayout.PREFERRED_SIZE)
+					.addGap(18)
+					.addComponent(lblData, GroupLayout.PREFERRED_SIZE, 76, GroupLayout.PREFERRED_SIZE)
+					.addContainerGap())
+		);
+		gl_desktopPane.setVerticalGroup(
+			gl_desktopPane.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_desktopPane.createSequentialGroup()
+					.addGroup(gl_desktopPane.createParallelGroup(Alignment.BASELINE)
+						.addComponent(lblData, GroupLayout.PREFERRED_SIZE, 16, GroupLayout.PREFERRED_SIZE)
+						.addComponent(lblUsuario))
+					.addGap(132)
+					.addComponent(t, GroupLayout.PREFERRED_SIZE, 47, Short.MAX_VALUE)
+					.addGap(148))
+		);
 		desktopPane.setLayout(gl_desktopPane);
 		GroupLayout gl_contentPane = new GroupLayout(contentPane);
 		gl_contentPane
@@ -241,7 +275,13 @@ public class TelaPrincipal extends JFrame {
 				} else {
 					if (usuario.isVisible()) {
 						usuario.moveToFront();
+						try {
+							usuario.setIcon(false);
+						} catch (PropertyVetoException e1) {
+						}
 					} else {
+						usuario = null;
+						usuario = new TelaUsuario();
 						desktopPane.add(usuario);
 						usuario.setVisible(true);
 						usuario.moveToFront();
@@ -263,7 +303,7 @@ public class TelaPrincipal extends JFrame {
 				JasperPrint print = JasperFillManager.fillReport("src/MyReports/Clientes1.jasper", null, conexao);
 
 				JFrame tela = new JFrame("Relatório");
-				tela.setBounds(100, 100, 626, 452);
+				tela.setBounds(100, 100, 800, 600);
 
 				JRViewer painel = new JRViewer(print);
 				tela.getContentPane().add(painel);
@@ -284,7 +324,7 @@ public class TelaPrincipal extends JFrame {
 				JasperPrint print = JasperFillManager.fillReport("src/MyReports/servicos.jasper", null, conexao);
 
 				JFrame tela = new JFrame("Relatório");
-				tela.setBounds(100, 100, 626, 452);
+				tela.setBounds(100, 100, 800, 600);
 
 				JRViewer painel = new JRViewer(print);
 				tela.getContentPane().add(painel);

@@ -60,10 +60,12 @@ public class TelaCliente extends JInternalFrame {
 	 * Create the frame.
 	 */
 	public TelaCliente() {
+		setFrameIcon(new ImageIcon(TelaCliente.class.getResource("/br/com/infox/icones/NTN - infox.png")));
+		setResizable(true);
+		setClosable(true);
 		setLocale(new Locale("es", "BR"));
 		conexao = ModuloConexao.conector();
 		setTitle("Cliente");
-		setClosable(true);
 		setMaximizable(true);
 		setIconifiable(true);
 		setBounds(100, 100, 626, 452);

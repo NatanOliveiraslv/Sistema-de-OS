@@ -83,6 +83,8 @@ public class TelaOS extends JInternalFrame {
 	 * Create the frame.
 	 */
 	public TelaOS() {
+		setFrameIcon(new ImageIcon(TelaOS.class.getResource("/br/com/infox/icones/NTN - infox.png")));
+		setResizable(true);
 		addInternalFrameListener(new InternalFrameAdapter() {
 			@Override
 			public void internalFrameOpened(InternalFrameEvent e) {
@@ -95,12 +97,12 @@ public class TelaOS extends JInternalFrame {
 		setTitle("OS");
 		setIconifiable(true);
 		setClosable(true);
-		setBounds(100, 100, 626, 452);
+		setBounds(100, 100, 675, 550);
 		getContentPane().setLayout(null);
 
 		JPanel panel = new JPanel();
 		panel.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
-		panel.setBounds(10, 11, 247, 102);
+		panel.setBounds(20, 11, 247, 102);
 		getContentPane().add(panel);
 		panel.setLayout(null);
 
@@ -148,18 +150,18 @@ public class TelaOS extends JInternalFrame {
 		grupo.add(rdbtnOs);
 
 		JLabel lblNewLabel_1 = new JLabel("Situação");
-		lblNewLabel_1.setBounds(10, 134, 46, 14);
+		lblNewLabel_1.setBounds(20, 141, 46, 14);
 		getContentPane().add(lblNewLabel_1);
 
 		cboOs = new javax.swing.JComboBox();
 		cboOs.setModel(new DefaultComboBoxModel(new String[] { " ", "Na bancada", "Entrega OK", "Orçamento REPROVADO",
 				"Aguardando aprovação", "Aguardando peças", "Abandonado pelo cliente", "Retornou" }));
-		cboOs.setBounds(59, 130, 198, 18);
+		cboOs.setBounds(69, 137, 198, 18);
 		getContentPane().add(cboOs);
 
 		JPanel panel_1 = new JPanel();
 		panel_1.setBorder(new TitledBorder(null, "Cliente", TitledBorder.LEADING, TitledBorder.TOP, null, null));
-		panel_1.setBounds(267, 11, 333, 181);
+		panel_1.setBounds(304, 11, 333, 181);
 		getContentPane().add(panel_1);
 		panel_1.setLayout(null);
 
@@ -203,55 +205,55 @@ public class TelaOS extends JInternalFrame {
 		tbClientes.setModel(new DefaultTableModel(new Object[][] {}, new String[] { "Id", "Nome", "Fone" }));
 		scrollPane.setViewportView(tbClientes);
 
-		JLabel lblNewLabel_4 = new JLabel("* Equipamento");
+		JLabel lblNewLabel_4 = new JLabel("* Equipamento:");
 		lblNewLabel_4.setHorizontalAlignment(SwingConstants.RIGHT);
-		lblNewLabel_4.setBounds(10, 206, 84, 14);
+		lblNewLabel_4.setBounds(43, 203, 75, 14);
 		getContentPane().add(lblNewLabel_4);
 
-		JLabel lblNewLabel_4_1 = new JLabel("* Defeito");
+		JLabel lblNewLabel_4_1 = new JLabel("* Descrição do problema:");
 		lblNewLabel_4_1.setHorizontalAlignment(SwingConstants.RIGHT);
-		lblNewLabel_4_1.setBounds(10, 231, 84, 14);
+		lblNewLabel_4_1.setBounds(43, 297, 121, 14);
 		getContentPane().add(lblNewLabel_4_1);
 
-		JLabel lblNewLabel_4_2 = new JLabel("Serviço");
+		JLabel lblNewLabel_4_2 = new JLabel("Serviço:");
 		lblNewLabel_4_2.setHorizontalAlignment(SwingConstants.RIGHT);
-		lblNewLabel_4_2.setBounds(10, 256, 84, 14);
+		lblNewLabel_4_2.setBounds(43, 250, 39, 14);
 		getContentPane().add(lblNewLabel_4_2);
 
-		JLabel lblNewLabel_4_3 = new JLabel("Técnico");
+		JLabel lblNewLabel_4_3 = new JLabel("Técnico:");
 		lblNewLabel_4_3.setHorizontalAlignment(SwingConstants.RIGHT);
-		lblNewLabel_4_3.setBounds(10, 281, 84, 14);
+		lblNewLabel_4_3.setBounds(43, 361, 40, 14);
 		getContentPane().add(lblNewLabel_4_3);
 
-		JLabel lblNewLabel_4_3_1 = new JLabel("Valor Total");
+		JLabel lblNewLabel_4_3_1 = new JLabel("Valor total:");
 		lblNewLabel_4_3_1.setHorizontalAlignment(SwingConstants.RIGHT);
-		lblNewLabel_4_3_1.setBounds(313, 281, 84, 14);
+		lblNewLabel_4_3_1.setBounds(363, 361, 53, 14);
 		getContentPane().add(lblNewLabel_4_3_1);
 
 		txtEquipamento = new JTextField();
-		txtEquipamento.setBounds(104, 203, 496, 20);
+		txtEquipamento.setBounds(43, 219, 572, 20);
 		getContentPane().add(txtEquipamento);
 		txtEquipamento.setColumns(10);
 
 		txtDefeito = new JTextField();
 		txtDefeito.setColumns(10);
-		txtDefeito.setBounds(104, 228, 496, 20);
+		txtDefeito.setBounds(43, 311, 572, 39);
 		getContentPane().add(txtDefeito);
 
 		txtServico = new JTextField();
 		txtServico.setColumns(10);
-		txtServico.setBounds(104, 253, 496, 20);
+		txtServico.setBounds(43, 264, 572, 20);
 		getContentPane().add(txtServico);
 
 		txtValor = new JTextField();
 		txtValor.setText("0");
 		txtValor.setColumns(10);
-		txtValor.setBounds(407, 278, 193, 20);
+		txtValor.setBounds(363, 375, 252, 20);
 		getContentPane().add(txtValor);
 
 		txtTecnico = new JTextField();
 		txtTecnico.setColumns(10);
-		txtTecnico.setBounds(104, 278, 193, 20);
+		txtTecnico.setBounds(43, 375, 247, 20);
 		getContentPane().add(txtTecnico);
 
 		btnAdicionar = new javax.swing.JButton("");
@@ -263,7 +265,7 @@ public class TelaOS extends JInternalFrame {
 		btnAdicionar.setIcon(new ImageIcon(TelaOS.class.getResource("/br/com/infox/icones/create.png")));
 		btnAdicionar.setToolTipText("Emitir OS");
 		btnAdicionar.setBackground((Color) null);
-		btnAdicionar.setBounds(35, 331, 80, 80);
+		btnAdicionar.setBounds(43, 429, 80, 80);
 		getContentPane().add(btnAdicionar);
 
 		btnPesquisar = new javax.swing.JButton("");
@@ -275,7 +277,7 @@ public class TelaOS extends JInternalFrame {
 		btnPesquisar.setIcon(new ImageIcon(TelaOS.class.getResource("/br/com/infox/icones/read.png")));
 		btnPesquisar.setToolTipText("Pesquisar OS");
 		btnPesquisar.setBackground((Color) null);
-		btnPesquisar.setBounds(150, 331, 80, 80);
+		btnPesquisar.setBounds(165, 429, 80, 80);
 		getContentPane().add(btnPesquisar);
 
 		btnAlterar = new javax.swing.JButton("");
@@ -288,7 +290,7 @@ public class TelaOS extends JInternalFrame {
 		btnAlterar.setIcon(new ImageIcon(TelaOS.class.getResource("/br/com/infox/icones/Update.png")));
 		btnAlterar.setToolTipText("Alterar OS");
 		btnAlterar.setBackground((Color) null);
-		btnAlterar.setBounds(265, 331, 80, 80);
+		btnAlterar.setBounds(288, 429, 80, 80);
 		getContentPane().add(btnAlterar);
 
 		btnRemover = new javax.swing.JButton("");
@@ -301,7 +303,7 @@ public class TelaOS extends JInternalFrame {
 		btnRemover.setIcon(new ImageIcon(TelaOS.class.getResource("/br/com/infox/icones/delete.png")));
 		btnRemover.setToolTipText("Remover OS");
 		btnRemover.setBackground((Color) null);
-		btnRemover.setBounds(380, 331, 80, 80);
+		btnRemover.setBounds(411, 429, 80, 80);
 		getContentPane().add(btnRemover);
 
 		btnImprimir = new javax.swing.JButton("");
@@ -314,7 +316,7 @@ public class TelaOS extends JInternalFrame {
 		btnImprimir.setIcon(new ImageIcon(TelaOS.class.getResource("/br/com/infox/icones/print.png")));
 		btnImprimir.setToolTipText("Imprimir OS");
 		btnImprimir.setBackground((Color) null);
-		btnImprimir.setBounds(495, 331, 80, 80);
+		btnImprimir.setBounds(535, 429, 80, 80);
 		getContentPane().add(btnImprimir);
 	}
 
@@ -504,7 +506,7 @@ public class TelaOS extends JInternalFrame {
 		        JasperPrint print = JasperFillManager.fillReport("src/MyReports/OS.jasper", filtro, conexao);
 		        
 				JFrame tela = new JFrame("Relatório");
-				tela.setBounds(100, 100, 626, 452);
+				tela.setBounds(100, 100, 1200, 600);
 				
 				JRViewer painel = new JRViewer(print);
 				tela.getContentPane().add(painel);
